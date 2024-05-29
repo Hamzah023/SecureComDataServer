@@ -3,11 +3,10 @@ from functools import wraps
 from . import app
 
 
-
 API_KEY = "28/2/24"
 
 def require_api_key(f):
-    @wraps(f)
+    @wraps(f) # This is a decorator that wraps the decorated function
     def decoratedFunction(*args, **kwargs):
         if request.headers.get('x-api-key') == API_KEY:
             return f(*args, **kwargs)
