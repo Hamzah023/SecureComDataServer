@@ -16,4 +16,9 @@ def require_api_key(f):
     return decoratedFunction
 
 
-
+'''
+api key is randomly generated
+client sends get request to the server asking for the api key
+server sends the api key to the client
+client sends a post request to the server with the api key
+'''

@@ -17,13 +17,13 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     #decorators = [limiter.limit("5 per minute"), require_api_key]  # Correct usage of limiter instance
     decorators = [limiter.limit("5 per minute", key_func=lambda: request.headers.get('X-Api-Key')), require_api_key]
     #decorators = [limiter.limit("5 per minute")]
+    #lamda is a function that returns a function, so the key_func is a function that returns the value of the x-api-key header
     print("still working")
     
     
     def get(self): # create a get method
         print("Get method works")
         return {"message" : 'Version1 hello world'} # return the string 'Version1 hello world'
-   
    
    
     def post(self): # create a post method
@@ -43,7 +43,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
                 else:
                     data_without_sets[key] = value # add the key-value pair to the data_without_sets dictionary
             
-            return {"message": f'Hello {data["name"]}! this is version 1, your email is {data_without_sets["email"]}'} # return a formatted string with the name from the JSON data
+            return {"message": f'Hello {data_without_sets["name"]}! this is version 1, your email is {data_without_sets["email"]}'} # return a formatted string with the name from the JSON data
         
         except ValidationError as err:
 
@@ -54,9 +54,16 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
 
 
-#command to make post request curl -X POST  http://127.0.0.1:5000/v1/hello -H "x-api-key: 28/2/24" -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "rfernandez@gmail.com"}' 
-#command to make get request curl -X GET http://127.0.0.1:5000/v1/hello -H "x-api-key: 28/2/24"
+#command to make post request curl -X POST  http://127.0.0.1:5000/v1/hello -H "Content-Type: application/json" -H "x-api-key: 28/2/24" -d '{"name": "John Doe", "email": "rfernandez@gmail.com"}'
+#command to make get request curl -X GET  http://127.0.0.1:5000/v1/hello -H "x-api-key: 28/2/24"
+# to update the github repo, here are the commands:
+# git add .
+# git commit -m "message"
+# git push --force origin main:main
 
-#so if the instance is a set (ifinstance(value, set), then it becomes a dictionary set by key: list(value), and it the instance is not a set it keeps it the same (else value for key), and value in data. The data.items() is iterated to find tuples that have key-value pairs from data
-#fix running, and test the code
-#throttling should work globally and for user as well, each user should have a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
+# --TASKS--
+# set up to remote server for ehtisham to test
+# study versioning in flask restful
+# put error handling for throttling
+# local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
+#Change api key after a moment of time ex 2 mins, expired key should give an error?

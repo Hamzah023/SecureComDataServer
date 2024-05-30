@@ -26,20 +26,22 @@ def create_app(): # create a function named create_app
     def index(): # create a function named index
         return jsonify({"message": 'Welcome'}) # return the string 'Welcome'
 
-    @app.route('/v1/API', methods=['POST'])
+    @app.route('/v1/API', methods=['GET'])
     @require_api_key
     def protectedRoute():
         return jsonify({"message": "API KEY is valid (v1)"})
 
-    @app.route('/v2/API', methods=['POST'])
+    @app.route('/v2/API', methods=['GET'])
     @require_api_key
     def v2ProtectedRoute():
         return jsonify({"message": "API KEY valid (V2)"})
 
-    @app.route('/unprotected', methods = ['POST'])
+    @app.route('/unprotected', methods = ['GET'])
     def unprotectedRoute():
         return jsonify({"message": "This route is unprotected"})
 
     return app # return the app instance
 
-
+    #-COMMANDS-
+    # to make a post request to the protected route, use the following command: curl -X GET http://127.0.0.1:5000/v1/API -H "x-api-key: 28/2/24"
+    # to make a post request to the unprotected route, use the following command: curl -X GET http://127.0.0.1:5000/   

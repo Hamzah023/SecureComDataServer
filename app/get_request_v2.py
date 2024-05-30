@@ -37,18 +37,10 @@ class getRequestV2(Resource): # create a class named getRequestV2 that inherits 
         except ValidationError as err:
             return {"message": 'N/A please input'}, 400
 
-
-#command to make post request curl -X POST http://127.0.0.1:5000/v2/hello -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "interests": ["reading", "traveling"], "unique_ids": [1, 2, 3]}'
-#curl -X POST http://127.0.0.1:5000/v2/hello -H "Content-Type: application/json" -d '{"name": "Rachel", "email": "rfernandez@gmail.com", x-api-key: 28/2/24}'
-#command to make get request curl -X GET http://
-#so if the instance is a set (ifinstance(value, set), then it becomes a dictionary set by key: list(value), and it the instance is not a set it keeps it the same (else value for key), and value in data. The data.items() is iterated to find tuples that have key-value pairs from data
-
-#set up to remote server for ehtisham to test
+# --TASKS--
+# set up to remote server for ehtisham to test
 # study versioning in flask restful
 # put error handling for throttling
-# local and the global throttling, so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
-# Put api key in header??
+# local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
 #Change api key after a moment of time ex 2 mins, expired key should give an error?
-#fix the bug in the code
-#fix running, and test the code
-#throttling should work globally and for user as well, each user should have a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
+
