@@ -5,29 +5,31 @@ from marshmallow import ValidationError # import the ValidationError class from 
 from app.schemas import UserSchema # import the UserSchema class from the schemas module
 from flask_oauthlib.provider import OAuth2Provider # import the OAuth2Provider class from the flask_oauthlib.provider module
 from app.auth import require_api_key # import the require_api_key function
-#from functools import wraps 
+
 
 
 print ('starting flask app')
+
+def return_constant():
+    return "constant"
 
 class getRequestV1(Resource): # create a class named getRequestV1 that inherits from the Resource class
     
     oauth = OAuth2Provider()
 
-    #decorators = [limiter.limit("5 per minute"), require_api_key]  # Correct usage of limiter instance
-    decorators = [limiter.limit("5 per minute", key_func=lambda: request.headers.get('X-Api-Key')), require_api_key]
-    #decorators = [limiter.limit("5 per minute")]
-    #lamda is a function that returns a function, so the key_func is a function that returns the value of the x-api-key header
+    decorators = [limiter.limit("5 per minute"), require_api_key]
+  
     print("still working")
     
-    
+    @limiter.limit("1000/minute", key_func=return_constant)
     def get(self): # create a get method
         print("Get method works")
         return {"message" : 'Version1 hello world'} # return the string 'Version1 hello world'
-   
-   
+    
+    @limiter.limit("1000/minute", key_func=return_constant)
     def post(self): # create a post method
         print("Post method works")
+        print(limiter.limit("5 per minute"))
         user_schema = UserSchema() # create an instance of the UserSchema class
         
         try: # try block
@@ -64,6 +66,6 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
 # --TASKS--
 # set up to remote server for ehtisham to test
 # study versioning in flask restful
-# put error handling for throttling
-# local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement
+# put error handling for throttling (done)
+# local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement (done)
 #Change api key after a moment of time ex 2 mins, expired key should give an error?

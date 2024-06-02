@@ -1,6 +1,15 @@
 # app/limiter.py
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask import Flask
+from flask_limiter import Limiter, RateLimitExceeded
+from flask import jsonify, request
 
-limiter = Limiter(key_func=get_remote_address) # Create an instance of the Limiter class with the get_remote_address function as the key_func argument
-#get_remote_address is a function that returns the IP address of the client making the request
+#this is for if you want to limit the number of requests per minute via api-key, a sort of global limiting
+def getApiKey():
+    print("getApiKey is being called")
+    apiKey = request.headers.get('x-api-key')
+    print(apiKey)
+    return request.headers.get('x-api-key')
+
+limiter = Limiter(key_func=getApiKey, default_limits=["5 per 1 minute"])
+
+
