@@ -4,7 +4,7 @@ from app.limiter import limiter # Import the limiter instance from the limiter
 from marshmallow import ValidationError # import the ValidationError class from the marshmallow module
 from app.schemas import UserSchema # import the UserSchema class from the schemas module
 from flask_oauthlib.provider import OAuth2Provider # import the OAuth2Provider class from the flask_oauthlib.provider module
-from app.auth import require_api_key # import the require_api_key function
+from app.auth import require_api_key, make_api_key, update_api_key # import the require_api_key function
 
 
 
@@ -17,16 +17,18 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
     oauth = OAuth2Provider()
 
-    decorators = [limiter.limit("5 per minute"), require_api_key]
+    decorators = [limiter.limit("5 per minute")]#, require_api_key]
   
     print("still working")
     
     @limiter.limit("1000/minute", key_func=return_constant)
     def get(self): # create a get method
         print("Get method works")
-        return {"message" : 'Version1 hello world'} # return the string 'Version1 hello world'
+        apiKey = update_api_key()
+        return {"message" : f'Version1 hello world, key is {apiKey}'} # return the string 'Version1 hello world'
     
     @limiter.limit("1000/minute", key_func=return_constant)
+    @require_api_key
     def post(self): # create a post method
         print("Post method works")
         print(limiter.limit("5 per minute"))
@@ -37,6 +39,13 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
             print("here is the statement", type(json_data))
             data = user_schema.load(json_data) # get the JSON data from the request
             
+            '''
+            missing_fields = set(user_schema.fields.keys) - set(data.keys())
+            if missing_fields:
+                missing_fields_messages = {field: f'{field.capitalize()} is required' for field in missing_fields}
+                return {'message': missing_fields_messages}, 400
+            '''
+
             data_without_sets = {} # create an empty dictionary
 
             for key, value in data.items(): # iterate over the key-value pairs in the data dictionary
@@ -49,7 +58,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
         
         except ValidationError as err:
 
-            return {"message": 'N/A please input..'}, 400
+            return {"message": 'N/A please input both name and email.'}, 400
 
 
 
@@ -65,7 +74,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
 
 # --TASKS--
 # set up to remote server for ehtisham to test
-# study versioning in flask restful
+# study versioning in flask restful (done)
 # put error handling for throttling (done)
 # local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement (done)
-#Change api key after a moment of time ex 2 mins, expired key should give an error?
+#Change api key after a moment of time ex 2 mins, expired key should give an error? (done)
