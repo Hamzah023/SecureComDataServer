@@ -5,10 +5,12 @@ from marshmallow import ValidationError # import the ValidationError class from 
 from app.schemas import UserSchema # import the UserSchema class from the schemas module
 from flask_oauthlib.provider import OAuth2Provider # import the OAuth2Provider class from the flask_oauthlib.provider module
 from app.auth import require_api_key, make_api_key, update_api_key # import the require_api_key function
+from flask_limiter import Limiter # Import the limiter instance
+from flask_limiter.util import get_remote_address
+from flask_limiter.errors import RateLimitExceeded
+from app.utils import limiter_instance
 
 
-
-print ('starting flask app')
 
 def return_constant():
     return "constant"
@@ -17,21 +19,27 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
     oauth = OAuth2Provider()
 
-    decorators = [limiter.limit("5 per minute")]#, require_api_key]
+    #decorators = [limiter.limit("1 per minute")]
   
     print("still working")
     
-    @limiter.limit("1000/minute", key_func=return_constant)
+    #@limiter.limit("1000/minute", key_func=return_constant)
+    #@limiter_instance.exempt
+    @limiter_instance.limit("2 per minute")
+
     def get(self): # create a get method
         print("Get method works")
         apiKey = update_api_key()
-        return {"message" : f'Version1 hello world, key is {apiKey}'} # return the string 'Version1 hello world'
+        return {"message" : f'Hello user, this is version 1, use the key: {apiKey}'} # return the string 'Version1 hello world'
     
-    @limiter.limit("1000/minute", key_func=return_constant)
+    #@limiter.limit("1 per day")
+    #decorators = [limiter.limit("10 per minute")]
+    
+    @limiter_instance.limit("2 per minute")
     @require_api_key
     def post(self): # create a post method
         print("Post method works")
-        print(limiter.limit("5 per minute"))
+       # print(limiter.limit("5 per minute"))
         user_schema = UserSchema() # create an instance of the UserSchema class
         
         try: # try block
@@ -59,7 +67,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
         except ValidationError as err:
 
             return {"message": 'N/A please input both name and email.'}, 400
-
+        
 
 
     
@@ -70,7 +78,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
 # to update the github repo, here are the commands:
 # git add .
 # git commit -m "message"
-# git push --force origin main:main
+# git push origin main
 
 # --TASKS--
 # set up to remote server for ehtisham to test

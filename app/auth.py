@@ -42,7 +42,7 @@ def update_api_key():
     print(f"The updated api key is {API_KEY}")
     return API_KEY
 
-schedule.every(5).minutes.do(update_api_key, 1) #the 1 argument is the count of the api key which means 1 api key will be generated every 2 minutes
+schedule.every(5).minutes.do(update_api_key) #the 1 argument is the count of the api key which means 1 api key will be generated every 2 minutes
 
 
 

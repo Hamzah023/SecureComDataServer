@@ -10,6 +10,6 @@ def getApiKey():
     print(apiKey)
     return request.headers.get('x-api-key')
 
-limiter = Limiter(key_func=getApiKey, default_limits=["5 per 1 minute"])
+limiter = Limiter(key_func=getApiKey, default_limits=["5 per 1 minuute"])
 
 

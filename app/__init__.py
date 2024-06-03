@@ -8,25 +8,26 @@ from .get_request_v2 import getRequestV2 # import the getRequestV2 class from th
 from flask_limiter.errors import RateLimitExceeded
 from .limiter import getApiKey
 from flask_limiter.util import get_remote_address
-
+from .utils import init_apdp, limiter_instance
 
 def create_app(): # create a function named create_app
     app = Flask(__name__) # create an instance of the Flask class with the name of the running application as the argument  
     api = Api(app) # create an instance of the Api class with the app instance as the argument
    
     
-    ''' @app.errorhandler(RateLimitExceeded)
-        def ratelimit_handler(e):
-            return jsonify({'message': 'You have exceeded the request rate limit'}), 429 
+    '''@app.errorhandler(RateLimitExceeded)
+    def ratelimit_handler(e):
+        return jsonify({'message': 'You have exceeded the request rate limit'}), 429 
     '''
 
-    limiter = Limiter(
+    '''limiter = Limiter(
         app=app, 
         key_func=get_remote_address, 
-        default_limits=["5 per minute"]
+        default_limits=["1000 per minute"]
     )
-
-    limiter.init_app(app) # initialize the limiter with your Flask app using the init_app method and configure the error handler.
+    '''
+    
+    init_apdp(app) # initialize the limiter with your Flask app using the init_app method and configure the error handler.
     
     print("resource v1 is being added to api")
     api.add_resource(getRequestV1, '/v1/hello') # add the getRequestV1 resource to the API with the route '/v1/hello'   
