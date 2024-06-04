@@ -84,9 +84,12 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
 #curl -X GET https://efd9-2607-fea8-4c26-1800-ec65-8b76-89d-65d3.ngrok-free.app/v1/hello
 #curl -X POST https://efd9-2607-fea8-4c26-1800-ec65-8b76-89d-65d3.ngrok-free.app/v1/hello -H "Content-Type: application/json" -H "x-api-key: [387755]" -d '{"name": "Rachel", "email": "rfernandez@gmail.com"}'
 
-# --TASKS--``
+# --TASKS--`
 # set up to remote server for ehtisham to test
 # study versioning in flask restful (done)
 # put error handling for throttling (done)
 # local (for the user) and the global throttling (for everyone), so every user has a limit of 5 requests per minute, should be able to set between per user or globally, if and else statement (done)
 #Change api key after a moment of time ex 2 mins, expired key should give an error? (done)
+
+#make sure configuration where user can access and change rate
+#make sure same api key is given even after refresh
