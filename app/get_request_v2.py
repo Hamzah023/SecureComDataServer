@@ -17,7 +17,7 @@ class getRequestV2(Resource): # create a class named getRequestv2 that inherits 
 
 
     #@limiter_instance.exempt
-    @limiter_instance.limit("1 per minute")
+    @limiter_instance.limit("5 per minute")
 
     def get(self): # create a get method
   

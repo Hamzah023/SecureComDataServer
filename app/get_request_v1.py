@@ -25,7 +25,7 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
     #@limiter.limit("1000/minute", key_func=return_constant)
     #@limiter_instance.exempt
-    @limiter_instance.limit("2 per minute")
+    @limiter_instance.limit("5 per minute")
 
     def get(self): # create a get method
         print("Get method works")
@@ -34,8 +34,8 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
     #@limiter.limit("1 per day")
     #decorators = [limiter.limit("10 per minute")]
-    
-    @limiter_instance.limit("2 per minute")
+
+    @limiter_instance.limit("5 per minute")
     @require_api_key
     def post(self): # create a post method
         print("Post method works")
@@ -73,14 +73,18 @@ class getRequestV1(Resource): # create a class named getRequestV1 that inherits 
     
 
 
-#command to make post request curl -X POST  http://127.0.0.1:5000/v1/hello -H "Content-Type: application/json" -H "x-api-key: 28/2/24" -d '{"name": "John Doe", "email": "rfernandez@gmail.com"}'
-#command to make get request curl -X GET  http://127.0.0.1:5000/v1/hello -H "x-api-key: 28/2/24"
+#command to make post request curl -X POST  http://127.0.0.1:5000/v1/hello 
+#command to make get request curl -X POST  http://127.0.0.1:5000/v1/hello -H "Content-Type: application/json" -H "x-api-key: [851593]" -d '{"name": "John Doe", "email": "rfernandez@gmail.com"}'
+#ngrok http 127.0.0.1:5000
 # to update the github repo, here are the commands:
 # git add .
 # git commit -m "message"
 # git push origin main
 
-# --TASKS--
+#curl -X GET https://efd9-2607-fea8-4c26-1800-ec65-8b76-89d-65d3.ngrok-free.app/v1/hello
+#curl -X POST https://efd9-2607-fea8-4c26-1800-ec65-8b76-89d-65d3.ngrok-free.app/v1/hello -H "Content-Type: application/json" -H "x-api-key: [387755]" -d '{"name": "Rachel", "email": "rfernandez@gmail.com"}'
+
+# --TASKS--``
 # set up to remote server for ehtisham to test
 # study versioning in flask restful (done)
 # put error handling for throttling (done)
